@@ -1,6 +1,6 @@
 Name:		trojan
 Version:	1.15.1
-Release:	5%{?dist}
+Release:	1%{?dist}
 Summary:	An unidentifiable mechanism that helps you bypass GFW
 
 Group:		Applications/Internet
@@ -45,7 +45,6 @@ make %{?_smp_mflags} -C %{_target_platform}
 
 
 %install
-rm -rf %{buildroot}
 make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 %post
@@ -56,9 +55,6 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 %postun
 %systemd_postun_with_restart trojan.service
-
-%clean 
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %{_bindir}/*
@@ -71,13 +67,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Wed Jun 10 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-5
-- Change scripts
-
-* Thu Jun 04 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-4
-- rebuilt
-
-* Mon Jun 01 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-2
-- rebuilt
-
-* Sun Nov 10 2019 Qiyu Yan <yanqiyu01@gmail.com> - 1.13.0-1
 - Initial release
