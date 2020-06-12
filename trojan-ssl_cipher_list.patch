@@ -1,12 +1,12 @@
-diff -upr trojan-1.15.1/src/core/service.cpp trojan-1.15.1.new/src/core/service.cpp
---- trojan-1.15.1/src/core/service.cpp	2020-03-25 13:22:14.000000000 +0800
-+++ trojan-1.15.1.new/src/core/service.cpp	2020-06-01 16:08:23.380000000 +0800
-@@ -229,7 +229,7 @@ Service::Service(Config &config, bool te
+diff -upr trojan-1.16.0/src/core/service.cpp trojan-1.16.0-fix/src/core/service.cpp
+--- trojan-1.16.0/src/core/service.cpp	2020-06-10 12:09:18.000000000 +0800
++++ trojan-1.16.0-fix/src/core/service.cpp	2020-06-12 21:31:13.170000000 +0800
+@@ -233,7 +233,7 @@ Service::Service(Config &config, bool te
          }
      }
-     if (config.ssl.cipher != "") {
+     if (!config.ssl.cipher.empty()) {
 -        SSL_CTX_set_cipher_list(native_context, config.ssl.cipher.c_str());
 +        SSL_CTX_set_cipher_list(native_context, "PROFILE=SYSTEM");
      }
-     if (config.ssl.cipher_tls13 != "") {
+     if (!config.ssl.cipher_tls13.empty()) {
  #ifdef ENABLE_TLS13_CIPHERSUITES
