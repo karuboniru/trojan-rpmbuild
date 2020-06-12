@@ -1,3 +1,5 @@
+The patch is for System-wide crypto policy
+see: https://fedoraproject.org/wiki/Changes/CryptoPolicy
 diff -upr trojan-1.16.0/src/core/service.cpp trojan-1.16.0-fix/src/core/service.cpp
 --- trojan-1.16.0/src/core/service.cpp	2020-06-10 12:09:18.000000000 +0800
 +++ trojan-1.16.0-fix/src/core/service.cpp	2020-06-12 21:31:13.170000000 +0800
