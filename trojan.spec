@@ -1,10 +1,9 @@
 Name:		trojan
-Version:	1.15.1
-Release:	4%{?dist}
-Summary:	An unidentifiable mechanism that helps you bypass GFW
+Version:	1.16.0
+Release:	1%{?dist}
+Summary:	An unidentifiable mechanism that helps you avoid censorship
 
-Group:		Applications/Internet
-License:	GPLv3
+License:	GPLv3+
 URL:		https://github.com/trojan-gfw/trojan
 Source0:	https://codeload.github.com/trojan-gfw/trojan/tar.gz/v%{version}
 Patch0:		trojan-ssl_cipher_list.patch
@@ -23,7 +22,7 @@ BuildRequires:	systemd
 %endif
 
 %description
-An unidentifiable mechanism that helps you bypass GFW.
+An unidentifiable mechanism that helps you avoid censorship.
 
 Trojan features multiple protocols over TLS to avoid both 
 active/passive detection and ISP QoS limitations.
@@ -32,7 +31,7 @@ Trojan is not a fixed program or protocol. It's an idea,
 an idea that imitating the most common service, 
 to an extent that it behaves identically, 
 could help you get across the Great FireWall permanently, 
-without being identified ever. We are the GreatER Fire; we ship Trojan Horses.
+without being identified ever.
 
 
 %prep
@@ -63,12 +62,15 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 %{_bindir}/*
 %license LICENSE
 %config(noreplace) %{_sysconfdir}/trojan/config.json
-%doc %{_mandir}/man1/trojan.1.gz
-%doc %{_defaultdocdir}/trojan/*
+%{_mandir}/man1/trojan.1.*
+%{_defaultdocdir}/trojan/*
 %{_unitdir}/*
 
 
 %changelog
+* Fri Jun 12 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.16.0-1
+- Update to upstream and change due to suggestion by robinlee.sysu@gmail.com
+
 * Fri Jun 12 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-4
 - Add CentOS 8 support (CentOS 7 will not be supported)
 
