@@ -1,6 +1,6 @@
 Name:		trojan
 Version:	1.15.1
-Release:	1%{?dist}
+Release:	4%{?dist}
 Summary:	An unidentifiable mechanism that helps you bypass GFW
 
 Group:		Applications/Internet
@@ -16,8 +16,11 @@ BuildRequires:	cmake
 BuildRequires:	boost-devel
 BuildRequires:	openssl-devel
 BuildRequires:	mariadb-devel
+%if 0%{?fedora} >= 30
 BuildRequires:	systemd-rpm-macros
-
+%else
+BuildRequires:	systemd
+%endif
 
 %description
 An unidentifiable mechanism that helps you bypass GFW.
@@ -66,5 +69,17 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 
 %changelog
+* Fri Jun 12 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-4
+- Add CentOS 8 support (CentOS 7 will not be supported)
+
 * Wed Jun 10 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-5
+- Change scripts
+
+* Thu Jun 04 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-4
+- rebuilt
+
+* Mon Jun 01 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-2
+- rebuilt
+
+* Sun Nov 10 2019 Qiyu Yan <yanqiyu01@gmail.com> - 1.13.0-1
 - Initial release
