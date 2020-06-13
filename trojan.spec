@@ -11,15 +11,20 @@ Source0:    https://codeload.github.com/trojan-gfw/trojan/tar.gz/v%{version}
 BuildRequires:    gcc
 BuildRequires:    gcc-c++
 BuildRequires:    make
-BuildRequires:    cmake
-BuildRequires:    boost-devel
-BuildRequires:    openssl-devel
+BuildRequires:    cmake>=3.7.2
+BuildRequires:    boost-devel>=1.66.0
+BuildRequires:    openssl-devel>=1.1.0
 BuildRequires:    mariadb-devel
 %if 0%{?fedora} >= 30
 BuildRequires:    systemd-rpm-macros
 %else
 BuildRequires:    systemd
 %endif
+BuildRequires:    python3
+BuildRequires:    netcat
+BuildRequires:    curl
+BuildRequires:    openssl
+
 
 %description
 An unidentifiable mechanism that helps you avoid censorship.
@@ -51,6 +56,11 @@ make %{?_smp_mflags} -C %{_target_platform}
 %install
 make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
+%check
+pushd %{_target_platform}
+make test
+popd
+
 %post
 %systemd_post trojan.service
 
@@ -59,6 +69,8 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 %postun
 %systemd_postun_with_restart trojan.service
+
+
 
 %files
 %{_bindir}/*
