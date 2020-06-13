@@ -11,9 +11,9 @@ Source0:    https://codeload.github.com/trojan-gfw/trojan/tar.gz/v%{version}
 BuildRequires:    gcc
 BuildRequires:    gcc-c++
 BuildRequires:    make
-BuildRequires:    cmake>=3.7.2
-BuildRequires:    boost-devel>=1.66.0
-BuildRequires:    openssl-devel>=1.1.0
+BuildRequires:    cmake >= 3.7.2
+BuildRequires:    boost-devel >= 1.66.0
+BuildRequires:    openssl-devel >= 1.1.0
 BuildRequires:    mariadb-devel
 %if 0%{?fedora} >= 30
 BuildRequires:    systemd-rpm-macros
