@@ -1,24 +1,24 @@
-Name:		trojan
-Version:	1.16.0
-Release:	3%{?dist}
-Summary:	An unidentifiable mechanism that helps you avoid censorship
+Name:       trojan
+Version:    1.16.0
+Release:    3%{?dist}
+Summary:    An unidentifiable mechanism that helps you avoid censorship
 
-License:	GPLv3+
-URL:		https://github.com/trojan-gfw/trojan
-Source0:	https://codeload.github.com/trojan-gfw/trojan/tar.gz/v%{version}
+License:    GPLv3+
+URL:        https://github.com/trojan-gfw/trojan
+Source0:    https://codeload.github.com/trojan-gfw/trojan/tar.gz/v%{version}
 
 
-BuildRequires:	gcc
-BuildRequires:	gcc-c++
-BuildRequires:	make
-BuildRequires:	cmake
-BuildRequires:	boost-devel
-BuildRequires:	openssl-devel
-BuildRequires:	mariadb-devel
+BuildRequires:    gcc
+BuildRequires:    gcc-c++
+BuildRequires:    make
+BuildRequires:    cmake
+BuildRequires:    boost-devel
+BuildRequires:    openssl-devel
+BuildRequires:    mariadb-devel
 %if 0%{?fedora} >= 30
-BuildRequires:	systemd-rpm-macros
+BuildRequires:    systemd-rpm-macros
 %else
-BuildRequires:	systemd
+BuildRequires:    systemd
 %endif
 
 %description
@@ -36,7 +36,9 @@ without being identified ever.
 
 %prep
 %setup -q
-sed -i '/cipher/d' examples/*.json-example
+sed -i '/"cipher"/c\        "cipher": "PROFILE=SYSTEM",' examples/*.json-example
+sed -i '/"cipher_tls13"/c\        "cipher_tls13": "PROFILE=SYSTEM",' examples/*.json-example
+
 
 %build
 mkdir -p %{_target_platform}
