@@ -1,6 +1,6 @@
 Name:		trojan
 Version:	1.16.0
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	An unidentifiable mechanism that helps you avoid censorship
 
 License:	GPLv3+
@@ -61,13 +61,18 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 %files
 %{_bindir}/*
 %license LICENSE
+%dir %{_sysconfdir}/trojan
+%dir %{_pkgdocdir}
 %config(noreplace) %{_sysconfdir}/trojan/config.json
 %{_mandir}/man1/trojan.1.*
-%{_defaultdocdir}/trojan/*
+%{_pkgdocdir}/*
 %{_unitdir}/*
 
 
 %changelog
+* Sat Jun 13 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.16.0-2
+- GuideLine: Package must own all directories that it creates
+
 * Fri Jun 12 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.16.0-1
 - Update to upstream and change due to suggestion by robinlee.sysu@gmail.com
 
