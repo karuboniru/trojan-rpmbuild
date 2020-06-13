@@ -1,12 +1,12 @@
 Name:		trojan
 Version:	1.16.0
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	An unidentifiable mechanism that helps you avoid censorship
 
 License:	GPLv3+
 URL:		https://github.com/trojan-gfw/trojan
 Source0:	https://codeload.github.com/trojan-gfw/trojan/tar.gz/v%{version}
-Patch0:		trojan-ssl_cipher_list.patch
+
 
 BuildRequires:	gcc
 BuildRequires:	gcc-c++
@@ -36,7 +36,7 @@ without being identified ever.
 
 %prep
 %setup -q
-%patch0 -p1
+sed -i '/cipher/d' examples/*.json-example
 
 %build
 mkdir -p %{_target_platform}
@@ -45,6 +45,10 @@ pushd %{_target_platform}
 popd
 make %{?_smp_mflags} -C %{_target_platform}
 
+%check
+pushd %{_target_platform}
+make test
+popd
 
 %install
 make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
@@ -70,17 +74,18 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 
 
 %changelog
+* Sat Jun 13 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.16.0-3
+- Do not patch source, instead, change shipped configuration file
+- Add check part
+
 * Sat Jun 13 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.16.0-2
 - GuideLine: Package must own all directories that it creates
 
 * Fri Jun 12 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.16.0-1
 - Update to upstream and change due to suggestion by robinlee.sysu@gmail.com
 
-* Fri Jun 12 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-4
+* Fri Jun 12 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-5
 - Add CentOS 8 support (CentOS 7 will not be supported)
-
-* Wed Jun 10 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-5
-- Change scripts
 
 * Thu Jun 04 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.15.1-4
 - rebuilt
