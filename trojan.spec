@@ -45,10 +45,6 @@ pushd %{_target_platform}
 popd
 make %{?_smp_mflags} -C %{_target_platform}
 
-%check
-pushd %{_target_platform}
-make test
-popd
 
 %install
 make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
@@ -76,7 +72,6 @@ make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
 %changelog
 * Sat Jun 13 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.16.0-3
 - Do not patch source, instead, change shipped configuration file
-- Add check part
 
 * Sat Jun 13 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.16.0-2
 - GuideLine: Package must own all directories that it creates
