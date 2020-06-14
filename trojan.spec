@@ -91,6 +91,7 @@ popd
 %{_mandir}/man1/%{name}.1.*
 %{_pkgdocdir}/*
 %{_unitdir}/%{name}.service
+%{_unitdir}/%{name}@.service
 
 
 %changelog
