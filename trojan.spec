@@ -1,13 +1,18 @@
 Name:       trojan
 Version:    1.16.0
-Release:    3%{?dist}
+Release:    4%{?dist}
 Summary:    An unidentifiable mechanism that helps you avoid censorship
 
+#GPLv3+ with opelssl exceptions
 License:    GPLv3+
-URL:        https://github.com/trojan-gfw/trojan
-Source0:    https://codeload.github.com/trojan-gfw/trojan/tar.gz/v%{version}
+URL:        https://github.com/trojan-gfw/%{name}
+Source0:    %{URL}/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+# signature from release page
+Source1:    %{URL}/releases/download/v%{version}/%{name}-%{version}.tar.gz.asc
+# keyid obtained from upstream auther's GitHub profile
+Source2:    https://pgp.key-server.io/0xA1DDD486533B0112
 
-
+# for build
 BuildRequires:    gcc
 BuildRequires:    gcc-c++
 BuildRequires:    make
@@ -20,10 +25,13 @@ BuildRequires:    systemd-rpm-macros
 %else
 BuildRequires:    systemd
 %endif
+# for test
 BuildRequires:    python3
-BuildRequires:    netcat
+BuildRequires:    nmap-ncat
 BuildRequires:    curl
 BuildRequires:    openssl
+#for verifying the tarball
+BuildRequires:    gnupg2
 
 
 %description
@@ -40,7 +48,9 @@ without being identified ever.
 
 
 %prep
+%{gpgverify} --keyring='%{SOURCE2}' --signature='%{SOURCE1}' --data='%{SOURCE0}'
 %setup -q
+# change cipher list in shipped configuration file&example into PROFILE=SYSTEM
 sed -i '/"cipher"/c\        "cipher": "PROFILE=SYSTEM",' examples/*.json-example
 sed -i '/"cipher_tls13"/c\        "cipher_tls13": "PROFILE=SYSTEM",' examples/*.json-example
 
@@ -49,12 +59,13 @@ sed -i '/"cipher_tls13"/c\        "cipher_tls13": "PROFILE=SYSTEM",' examples/*.
 mkdir -p %{_target_platform}
 pushd %{_target_platform}
 %{cmake} ..
+%make_build
 popd
-make %{?_smp_mflags} -C %{_target_platform}
-
 
 %install
-make install/fast DESTDIR=%{buildroot} -C %{_target_platform}
+pushd %{_target_platform}
+%make_install
+popd
 
 %check
 pushd %{_target_platform}
@@ -62,28 +73,31 @@ make test
 popd
 
 %post
-%systemd_post trojan.service
+%systemd_post %{name}.service
 
 %preun
-%systemd_preun trojan.service
+%systemd_preun %{name}.service
 
 %postun
-%systemd_postun_with_restart trojan.service
-
+%systemd_postun_with_restart %{name}.service
 
 
 %files
-%{_bindir}/*
+%{_bindir}/%{name}
 %license LICENSE
-%dir %{_sysconfdir}/trojan
+%dir %{_sysconfdir}/%{name}
 %dir %{_pkgdocdir}
-%config(noreplace) %{_sysconfdir}/trojan/config.json
-%{_mandir}/man1/trojan.1.*
+%config(noreplace) %{_sysconfdir}/%{name}/config.json
+%{_mandir}/man1/%{name}.1.*
 %{_pkgdocdir}/*
-%{_unitdir}/*
+%{_unitdir}/%{name}.service
 
 
 %changelog
+* Sun Jun 14 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.16.0-4
+- Change due to review suggestions
+- see: https://bugzilla.redhat.com/show_bug.cgi?id=1846175
+
 * Sat Jun 13 2020 Qiyu Yan <yanqiyu01@gmail.com> - 1.16.0-3
 - Do not patch source, instead, change shipped configuration file
 
